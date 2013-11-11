@@ -1,0 +1,279 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D11C207F-5D76-4842-8060-3D7E752E306A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>LockBox</RootNamespace>
+    <AssemblyName>LockBox</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.WindowsAzure.StorageClient, Version=1.7.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ExternalLibraries\WindowsAzureSDK1.6\v1.6\bin\Microsoft.WindowsAzure.StorageClient.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp, Version=103.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\RestSharp.103.4\lib\net4\RestSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Services.Client" />
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.Net.Http, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Net.Http.WebRequest, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Application\LockBoxApplicationContextSetting.cs" />
+    <Compile Include="Application\LockBoxApplicationContextData.cs" />
+    <Compile Include="Application\LockBoxApplicationData.cs" />
+    <Compile Include="Container\ContainerMessageType.cs" />
+    <Compile Include="Container\EntityContainerDeleteQueueEntry.cs" />
+    <Compile Include="Container\EntityContainerExtendedAccessType.cs" />
+    <Compile Include="Container\EntityContainerExtendedAccessEntry.cs" />
+    <Compile Include="Container\EntityContainerGroupData.cs" />
+    <Compile Include="Container\EntityContainerContextMembership.cs" />
+    <Compile Include="Container\EntityContainerTouchData.cs" />
+    <Compile Include="Container\EntityContainerTouchManager.cs" />
+    <Compile Include="Context\ContextData.cs" />
+    <Compile Include="Context\ContextKeyMaterial.cs" />
+    <Compile Include="Context\ContextRole.cs" />
+    <Compile Include="Context\ContextSetting.cs" />
+    <Compile Include="Context\EntityContextMembership.cs" />
+    <Compile Include="Entity\EntityContextProperty.cs" />
+    <Compile Include="Entity\EntityQuickListData.cs" />
+    <Compile Include="Entity\EntityQuickListDataType.cs" />
+    <Compile Include="Entity\EntityAccountActivationProperty.cs" />
+    <Compile Include="Entity\EntityAccountActivationEntry.cs" />
+    <Compile Include="Entity\EntityAccountActivationType.cs" />
+    <Compile Include="Entity\EntityDataRecoveryMode.cs" />
+    <Compile Include="Entity\EntityOneTimeTokenData.cs" />
+    <Compile Include="Entity\EntityPasswordResetData.cs" />
+    <Compile Include="Entity\EntityProperty.cs" />
+    <Compile Include="Identity\IdentityProviders.cs" />
+    <Compile Include="Identity\IdentiyProviderHelper.cs" />
+    <Compile Include="Notification\NotificationHelper.cs" />
+    <Compile Include="REST\Actions\RESTAction_GetContainerIDsFromName.cs" />
+    <Compile Include="REST\Actions\RESTAction_GetContextSetting.cs" />
+    <Compile Include="REST\Actions\RESTAction_CreateMailClientSFTContainer.cs" />
+    <Compile Include="REST\Actions\RESTAction_CheckEntitiesContextMembershipInRole.cs" />
+    <Compile Include="REST\Actions\RESTAction_GetEntityRolesForContext.cs" />
+    <Compile Include="REST\Actions\RESTAction_GetDataLeakChecks.cs" />
+    <Compile Include="REST\Actions\RESTAction_GetContainerIDFromFriendlyID.cs" />
+    <Compile Include="REST\Actions\RESTAction_GetContainerBlobInfoListByState.cs" />
+    <Compile Include="REST\Actions\RESTAction_CreateEntityOneTimeToken.cs" />
+    <Compile Include="REST\Actions\RESTAction_ReadEntityContainerBlob.cs" />
+    <Compile Include="REST\Actions\RESTAction_CheckInEntityContainerBlob.cs" />
+    <Compile Include="REST\Actions\RESTAction_CheckOutEntityContainerBlob.cs" />
+    <Compile Include="REST\LockBoxRestClientRequestFormat.cs" />
+    <Compile Include="REST\LockBoxRESTClient_ContextSetting.cs" />
+    <Compile Include="REST\LockBoxRESTHelper_ContextSetting.cs" />
+    <Compile Include="REST\LockBoxRESTClient_MailClient.cs" />
+    <Compile Include="REST\LockBoxRESTHelper_ContextRole.cs" />
+    <Compile Include="REST\LockBoxRESTClient_ContextRoles.cs" />
+    <Compile Include="REST\LockBoxRESTHelper_DataLeak.cs" />
+    <Compile Include="REST\LockBoxRESTClient_DataLeaks.cs" />
+    <Compile Include="REST\LockBoxRESTHelper_Context.cs" />
+    <Compile Include="REST\LockBoxRESTClient_EntityOneTimeToken.cs" />
+    <Compile Include="REST\Model\RESTDataLeakCheckList.cs" />
+    <Compile Include="REST\Model\RESTBlobInfoList.cs" />
+    <Compile Include="REST\Model\RESTBlobInfo.cs" />
+    <Compile Include="REST\Model\RESTBlobCheckInData.cs" />
+    <Compile Include="REST\Model\RESTBlobCheckOutData.cs" />
+    <Compile Include="REST\Model\RESTBlobReadData.cs" />
+    <Compile Include="REST\Model\RESTDataLeakCheck.cs" />
+    <Compile Include="REST\Model\RESTEntityOneTimeTokenData.cs" />
+    <Compile Include="REST\Model\RESTMailClientContainerConfig.cs" />
+    <Compile Include="REST\Model\RESTMailClientContainerType.cs" />
+    <Compile Include="Storage\Cloud\CloudStorageEndpointHelper_Mirror.cs" />
+    <Compile Include="Storage\Cloud\CloudStorageEndpointHelper.cs" />
+    <Compile Include="Storage\SharedAccessSignatureHelper.cs" />
+    <Compile Include="UploadQueue\UploadQueueEntry.cs" />
+    <None Include="Blob\LockBoxBlobHelper.cs.bak" />
+    <Compile Include="Blob\EntityBlobCheckInData.cs" />
+    <Compile Include="Blob\LockBoxBlobHelper.cs" />
+    <Compile Include="Blob\EntityBlob.cs" />
+    <Compile Include="Blob\LockBoxBlobStatus.cs" />
+    <Compile Include="Blob\LockBoxManagedBlob.cs" />
+    <Compile Include="Blob\LockBoxBlobDataStream.cs" />
+    <Compile Include="Blob\LockBoxBlobMetaData.cs" />
+    <Compile Include="Blob\LockBoxBlobStatusKey.cs" />
+    <Compile Include="Blob\LockBoxBlobStream.cs" />
+    <Compile Include="Container\EntityContainerEvent.cs" />
+    <Compile Include="Container\EntityContainerFileEntry.cs" />
+    <Compile Include="Container\LockBoxContainerAPIAccessDataCollection.cs" />
+    <None Include="Container\LockBoxContainerAnonymousAccessData.cs.old" />
+    <Compile Include="Container\LockBoxContainerAPIAccessData.cs" />
+    <Compile Include="Entity\LockBoxEntityHelper_Credentials.cs" />
+    <Compile Include="Container\LockBoxContainerRights.cs" />
+    <Compile Include="Container\LockBoxContainerRightsCollection.cs" />
+    <Compile Include="Container\LockBoxEntityContainer.cs" />
+    <Compile Include="Container\LockBoxEntityData.cs" />
+    <Compile Include="Container\LockBoxContainerHelper.cs" />
+    <Compile Include="Container\LockBoxContainerPropertyKey.cs" />
+    <Compile Include="Container\LockBoxContainerProtectionMode.cs" />
+    <Compile Include="Entity\LockBoxEntitySetting.cs" />
+    <Compile Include="GeographicLocation.cs" />
+    <Compile Include="IO\LockBoxProtectedFileSystem.cs" />
+    <Compile Include="IO\LockBoxProtectedFileStream.cs" />
+    <Compile Include="LibraryResources.Designer.cs">
+      <DependentUpon>LibraryResources.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="LockBoxEntityIDType.cs" />
+    <Compile Include="REST\Actions\RESTAction_RemoveEntityContainerBlob.cs" />
+    <Compile Include="REST\Actions\RESTAction_WriteEntityContainerBlob.cs" />
+    <Compile Include="REST\Actions\RESTAction_RemoveEntityContainerMembership.cs" />
+    <Compile Include="REST\Actions\RESTAction_ContainerKeyData.cs" />
+    <Compile Include="REST\Actions\RESTAction_SetEntityContainerMembership.cs" />
+    <Compile Include="REST\Actions\RESTAction_EntityContainerIDsByType.cs" />
+    <Compile Include="REST\Actions\RESTAction_ResolveEntityToID.cs" />
+    <Compile Include="REST\Actions\RESTAction_WriteContainerMessage.cs" />
+    <Compile Include="REST\Actions\RESTAction_EntityPrivateKeyData.cs" />
+    <Compile Include="REST\Actions\RESTAction_RemoveEntityContainer.cs" />
+    <Compile Include="REST\Actions\RESTAction_SetEntityContainerEnabled.cs" />
+    <Compile Include="REST\LockBoxRESTClient_Blob.cs" />
+    <Compile Include="REST\LockBoxRESTHelper_Blob.cs" />
+    <Compile Include="REST\LockBoxRESTClient_ContainerMembership.cs" />
+    <Compile Include="REST\LockBoxRESTHelper_GenericData.cs" />
+    <Compile Include="REST\LockBoxRESTClient_Entity.cs" />
+    <Compile Include="REST\LockBoxRESTClient_ContainerMessage.cs" />
+    <Compile Include="REST\LockBoxRESTHelper_ContainerMessages.cs" />
+    <Compile Include="REST\LockBoxRESTClient_Cache.cs" />
+    <Compile Include="REST\LockBoxRESTHelper_EntityKeyMaterial.cs" />
+    <Compile Include="REST\LockBoxRESTClient_Container.cs" />
+    <Compile Include="REST\LockBoxRESTHelper_Entity.cs" />
+    <Compile Include="REST\LockBoxRESTHelper_Container.cs" />
+    <Compile Include="REST\LockBoxRESTHelper.cs" />
+    <Compile Include="REST\Actions\RESTAction_Debug.cs" />
+    <Compile Include="REST\Actions\RESTAction_EntityPublicKeyData.cs" />
+    <Compile Include="REST\Actions\RESTAction_CreateEntityContainer.cs" />
+    <Compile Include="REST\Actions\RESTAction_Ping.cs" />
+    <Compile Include="REST\Actions\RESTAction_PublicServiceCounters.cs" />
+    <Compile Include="REST\LockBoxRESTClient_PostDebug.cs" />
+    <Compile Include="REST\LockBoxRESTClient_StatsAndHealth.cs" />
+    <Compile Include="REST\LockBoxRESTClient_EntityKeyMaterial.cs" />
+    <Compile Include="REST\Actions\RESTActionBase.cs" />
+    <Compile Include="REST\LockBoxAPIVersion.cs" />
+    <Compile Include="REST\LockBoxRESTClient_Base.cs" />
+    <Compile Include="REST\Model\ProtectedContainerKeyData.cs" />
+    <Compile Include="REST\Model\RESTContainerKeyData.cs" />
+    <Compile Include="Security\Cryptography\LockBoxEntityPublicKeyMaterial.cs" />
+    <Compile Include="Security\Cryptography\LockBoxProtectData.cs" />
+    <Compile Include="Security\Cryptography\LockBoxEntityAsymmetricKey.cs" />
+    <Compile Include="Security\Cryptography\LockBoxEntityCryptoData.cs" />
+    <Compile Include="Configuration\LockBoxEntityClientConfigurationSection.cs" />
+    <Compile Include="LockBoxErrorCode.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Statistics\LockBoxStatisticsKey.cs" />
+    <Compile Include="Storage\Cloud\CloudStorageEndpoint.cs" />
+    <Compile Include="Storage\Cloud\MicrosoftAzureStorage.cs" />
+    <Compile Include="Storage\Cloud\MicrosoftAzureStorage_Blob.cs" />
+    <Compile Include="Storage\Cloud\MicrosoftAzureStorage_Container.cs" />
+    <Compile Include="Storage\ILockBoxStorage.cs" />
+    <Compile Include="Blob\LockBoxBlobHelper_Compression.cs" />
+    <Compile Include="Blob\LockBoxBlobHelper_Encryption.cs" />
+    <Compile Include="Blob\LockBoxBlobMetaDataKey.cs" />
+    <Compile Include="Storage\LockBoxStorageInfoReader.cs" />
+    <Compile Include="Storage\LockBoxStorageType.cs" />
+    <Compile Include="Storage\PhysicalStorageLocation.cs" />
+    <Compile Include="Storage\Cloud\CloudStorageVendor.cs" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LockBox.Common\LockBox.Common.csproj">
+      <Project>{883FE36A-9172-420F-8978-C294EAEFBB34}</Project>
+      <Name>LockBox.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="LibraryResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>LibraryResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Common\" />
+    <Folder Include="REST\Cache\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

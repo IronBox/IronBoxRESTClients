@@ -1,0 +1,208 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+using LockBox.Common;
+using LockBox.Common.Security.Cryptography;
+using LockBox.Common.IO;
+using System.Security.Cryptography;
+
+namespace LockBox
+{
+    public class LockBoxContainerAnonymousAccessData
+    {
+        public long ContainerID { set; get; }
+        public bool PasswordRequired { set; get; }
+        public int KeyDerivationIterations { set; get; }
+        public LockBoxContainerRightsCollection Rights { set; get; }
+        public byte[] ProtectedContainerSessionKey { set; get; }
+
+        public SymmetricKeyStrength ParentContainerSymmetricStrength { set; get; }
+        public String ParentContainerSalt { set; get; }
+        public byte[] ParentContainerSymmetricIV { set; get; }
+
+        public LockBoxContainerAnonymousAccessData()
+        {
+            Reset();
+        }
+
+        public void Reset()
+        {
+            ContainerID = -1;
+            PasswordRequired = true;
+            KeyDerivationIterations = KeyDerivationHelper.MinKeyDerivationIterations;
+            ProtectedContainerSessionKey = null;
+            if (Rights == null)
+            {
+                Rights = new LockBoxContainerRightsCollection();
+            }
+            Rights.Clear();
+            ParentContainerSymmetricStrength = SymmetricKeyStrength.AES256;
+        }
+
+        public bool AddRight(LockBoxContainerRights ThisRight)
+        {
+            //LockBoxDebugHelper.Debug_Log("Trying to add: ", ThisRight.ToString(), false);
+            // Rights container object already checks if the rights is contained
+            // so no need to check if it already exists
+            bool Result = false;
+            switch (ThisRight)
+            {
+                case LockBoxContainerRights.Read:
+                case LockBoxContainerRights.Write:
+                    Rights.AddRight(ThisRight);
+                    Result = true;
+                    break;
+
+                default:
+                    // Nop, since we don't allow anonymous users to have modify or 
+                    // ownership rights
+                    break;
+            }
+            return (Result);            
+        }
+
+        public void RemoveRight(LockBoxContainerRights ThisRight)
+        {
+            Rights.RemoveRight(ThisRight);
+        }
+
+        public String GetDBStorableRightsString()
+        {
+            m_DropInvalidAnonymousAccessRights();
+            return (Rights.GetDBStorageString());
+        }
+
+        public bool LoadDBStorableRightsString(String s)
+        {
+            bool Results = Rights.LoadDBStorableString(s);
+            m_DropInvalidAnonymousAccessRights();
+            return (Results);
+        }
+
+        //---------------------------------------------------------------------
+        /// <summary>
+        ///     Validates the anonymous access password (if any) and returns the unprotected container session
+        ///     key.
+        ///     Precondition: this object is already loaded with the parents key material
+        /// </summary>
+        /// <param name="Password"></param>
+        /// <param name="UnprotectedContainerSessionKey"></param>
+        /// <returns></returns>
+        //---------------------------------------------------------------------
+        public bool ValidatePassword(String Password, out byte[] UnprotectedContainerSessionKey)
+        {
+            // Try to decrypt the password
+            try
+            {
+                // If a password is not needed validation, this means the copy of the container
+                // session key is in clear text
+                UnprotectedContainerSessionKey = ProtectedContainerSessionKey;
+
+                // Password required, which means we need to decrypt the conatiner session key copy
+                if (PasswordRequired)
+                {
+                    byte[] Salt = StreamHelper.GetByteBufferFromString(ParentContainerSalt);
+                    byte[] ProtectionSessionKey = KeyDerivationHelper.DeriveSymmetricKey(ParentContainerSymmetricStrength, KeyDerivationIterations, Salt, Password);
+
+                    // Decrypt the encrypted container session key
+                    SymmetricAlgorithm SA = SymmetricEncryptionHelper.GetSymmetricAlgorithmObject(ParentContainerSymmetricStrength);
+                    SA.Key = ProtectionSessionKey;
+                    SA.IV = ParentContainerSymmetricIV;
+                    UnprotectedContainerSessionKey = SymmetricEncryptionHelper.Symmetric_EncryptOrDecrypt(ProtectedContainerSessionKey, SA, CryptoMode.Decrypt);
+                }
+
+                // If the decryption failed then an exception would have been thrown on the decryption
+                return (!StreamHelper.ByteBufferIsNullOrEmpty(UnprotectedContainerSessionKey));
+            }
+            catch (Exception e)
+            {
+                LockBoxDebugHelper.Debug_Log("LockBoxContainerAnonymousData->ValidatePassword", e.Message, true);
+                UnprotectedContainerSessionKey = null;
+                return (false);
+            }
+        }
+
+        /// <summary>
+        ///     Removes any invalid rights 
+        /// </summary>
+        private void m_DropInvalidAnonymousAccessRights()
+        {
+            if (Rights != null)
+            {
+                foreach (LockBoxContainerRights CurrentRight in Enum.GetValues(typeof(LockBoxContainerRights)))
+                {
+                    switch (CurrentRight)
+                    {
+                        case LockBoxContainerRights.Write:
+                        case LockBoxContainerRights.Read:
+                            // nop, valid right
+                            break;
+
+                        default:
+                            // All other rights are invalid in an anonymous context
+                            Rights.RemoveRight(CurrentRight);
+                            break;
+
+                    }
+                }
+            }
+        }
+
+        public bool LoadKeyMaterialDataFromParentContainer(EntityContainer ParentContainerInfo)
+        {
+            if (ParentContainerInfo == null)
+            {
+                return (false);
+            }
+
+            ContainerID = ParentContainerInfo.ContainerID;
+            ParentContainerSymmetricStrength = ParentContainerInfo.SymmetricProtection;
+            ParentContainerSalt = ParentContainerInfo.FileNameSalt;
+            ParentContainerSymmetricIV = ParentContainerInfo.SymmetricIV;
+
+            // Done
+            return (true);
+        }
+
+        public bool EnableAnonymousAccessOnConfigurationOnConfigurationObject(String AnonymousAccessPassword, byte[] UnprotectedContainerSessionKey)
+        {
+            try
+            {
+                // Determine if anonymous access requires a password still
+                PasswordRequired = !String.IsNullOrEmpty(AnonymousAccessPassword);
+                ProtectedContainerSessionKey = UnprotectedContainerSessionKey;
+
+                // If a password is required then we need to take steps to protect the 
+                // container session key
+                if (PasswordRequired)
+                {
+                    // Come up with a random key derivation size each time
+                    KeyDerivationIterations = KeyDerivationHelper.GetCryptoRandomKeyIterations();
+
+                    // Convert salt into byte buffer
+                    byte[] Salt = StreamHelper.GetByteBufferFromString(ParentContainerSalt);
+
+                    // Derive the session key from the password
+                    byte[] ProtectionSessionKey = KeyDerivationHelper.DeriveSymmetricKey(ParentContainerSymmetricStrength, KeyDerivationIterations, Salt, AnonymousAccessPassword);
+
+                    // Encrypt the unprotected container session key
+                    SymmetricAlgorithm SA = SymmetricEncryptionHelper.GetSymmetricAlgorithmObject(ParentContainerSymmetricStrength);
+                    SA.Key = ProtectionSessionKey;
+                    SA.IV = ParentContainerSymmetricIV;
+                    ProtectedContainerSessionKey = SymmetricEncryptionHelper.Symmetric_EncryptOrDecrypt(UnprotectedContainerSessionKey, SA, CryptoMode.Encrypt);
+                }
+
+                // Done, no errors
+                return (true);
+            }
+            catch (Exception e)
+            {
+                LockBoxDebugHelper.Debug_Log("EnableAnonymousAccessOnConfigurationOnConfigurationObject", e.Message, true);
+                return (false);
+            }
+        }       
+    }
+    
+}
