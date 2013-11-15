@@ -16,11 +16,11 @@ from IronBoxREST import IronBoxRESTClient
 #---------------------------------------------------
 ContainerID = 100777	
 IronBoxEmail = "email@email.com"
-IronBoxPassword = "password"
+IronBoxPassword = "password123"
 IronBoxAPIServerURL = "https://api.goironcloud.com/latest/"
 IronBoxAPIVersion = "latest"
-InFile = "hugefile.txt"
-IronBoxFileName = "hugefileOnIronBox.txt"
+InFile = "test.txt"
+IronBoxFileName = "testFileOnIronBox.txt"
 
 #---------------------------------------------------
 # Main

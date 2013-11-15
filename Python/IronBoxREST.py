@@ -12,6 +12,8 @@
 #			Urllib2, openssl and Json.  Added pycrypto.
 #			Using BlockBlob and re-assembling on the server
 #			as it's more efficient than PageBlobs
+#	11/15/2013  -	Added x-ms-version in BlockBlob upload for stricter
+#			adherence to protocol
 #------------------------------------------------------------------------
 import os
 import datetime
@@ -161,7 +163,8 @@ class IronBoxRESTClient():
 	# Send headers 
 	headers = {
             'content-type': 'application/octet-stream',
-            'x-ms-blob-type' : 'BlockBlob'     
+            'x-ms-blob-type' : 'BlockBlob',
+	    'x-ms-version' : '2012-02-12'   
 	}
 
 	# Open handle to encrypted file and send it in blocks
@@ -201,22 +204,19 @@ class IronBoxRESTClient():
 	if self.Verbose:
 	    print
 
-
 	# Done sending blocks, so commit the blocks into a single one 
 	# do the final re-assembly on the storage server side
 	commitBlockSASUrl = sasUri + "&comp=blockList" 
 	commitheaders = {
             'content-type': 'text/xml',
-            'x-ms-blob-type' : 'BlockBlob'     
+	    'x-ms-version' : '2012-02-12'   
 	}
 	# build list of block ids as xml elements
 	blockListBody = ''
 	for x in blockIDs:
 	    encodedBlockID = x.encode('base64','strict').strip()
-	    # According to http://msdn.microsoft.com/en-us/library/windowsazure/dd179467.aspx
-	    # this should be <Latest>blockid</Latest, but it returns an XML invalid error
-	    # The old <Block> works though
-	    blockListBody += "<Block>%s</Block>" % encodedBlockID 
+	    # Indicate blocks to commit per 2012-02-12 version PUT block list specifications 
+	    blockListBody += "<Latest>%s</Latest>" % encodedBlockID 
 	commitBody = '<?xml version="1.0" encoding="utf-8"?><BlockList>%s</BlockList>' % blockListBody
 	commitResponse = requests.put(commitBlockSASUrl, data=commitBody, headers=commitheaders)		
 	return commitResponse.status_code == requests.codes.created
@@ -443,7 +443,6 @@ class IronBoxKeyData():
 	    return True
 
 	except Exception, e:
-	    print e
 	    return False
 
     #-------------------------------------------------------------
