@@ -1,6 +1,6 @@
 #------------------------------------------------------------------------
 #   IronBox REST API Python wrapper
-#   Version: 1.2 (11/12/2013)
+#   Version: 1.3 (11/15/2013)
 #   Author: KevinLam@goironbox.com
 #   Website: www.goironbox.com
 #   Dependencies:
@@ -12,8 +12,9 @@
 #			Urllib2, openssl and Json.  Added pycrypto.
 #			Using BlockBlob and re-assembling on the server
 #			as it's more efficient than PageBlobs
-#	11/15/2013  -	Added x-ms-version in BlockBlob upload for stricter
-#			adherence to protocol
+#	11/15/2013  -	v1.3 Added x-ms-version in BlockBlob upload for 
+#			stricter adherence to protocol
+#
 #------------------------------------------------------------------------
 import os
 import datetime
@@ -200,7 +201,7 @@ class IronBoxRESTClient():
 		    sys.stdout.write("\r[%s%s] %d byte(s) sent" % ('=' * done, ' ' * (50-done), numBytesSent) )    
 		    sys.stdout.flush()
 	
-	# We're, so if verbose go to new line		    
+	# We're done, so if verbose go to new line		    
 	if self.Verbose:
 	    print
 
