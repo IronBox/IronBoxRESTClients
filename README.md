@@ -1,9 +1,15 @@
+<h1>IronBox REST Clients</h1>
+
 Please refer to the following repositories by programming language:
 
-Python: https://github.com/IronBox/ironbox-client-python
+<ul>
+<li>Python: https://github.com/IronBox/ironbox-client-python</li>
+<li>PHP (courtesy of our friends at MailChimp): https://github.com/mailchimp/IronBox-PHP</li>
+<li>Objective-C (Beta): https://github.com/IronBox/ironbox-client-objective-c</li>
+<li>DotNet Framework (Beta): https://github.com/IronBox/ironbox-client-dotnet </li>
+</ul>
 
-Objective-C: https://github.com/IronBox/ironbox-client-objective-c
 
-PHP (courtesy of our friends at MailChimp): https://github.com/mailchimp/IronBox-PHP
+<h2>License</h2>
 
-DotNet Framework (Coming soon): https://github.com/IronBox/ironbox-client-dotnet 
+MIT OpenSourced license: http://opensource.org/licenses/MIT
