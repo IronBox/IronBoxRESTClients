@@ -7,6 +7,7 @@ Please refer to the following repositories by programming language:
 <li>PHP (courtesy of our friends at MailChimp): https://github.com/mailchimp/IronBox-PHP</li>
 <li>Objective-C (Beta): https://github.com/IronBox/ironbox-client-objective-c</li>
 <li>DotNet Framework (Beta): https://github.com/IronBox/ironbox-client-dotnet </li>
+<li>Java (Beta): https://github.com/IronBox/ironbox-client-java</li>
 </ul>
 
 
